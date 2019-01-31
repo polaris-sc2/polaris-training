@@ -28,4 +28,3 @@ if __name__ == "__main__":
         url=URL,
         license=LICENSE
     )
-)
