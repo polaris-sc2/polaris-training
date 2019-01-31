@@ -15,7 +15,9 @@ PROJECT_ROOT = dirname(realpath(__file__))
 REQUIREMENTS_FILE = join(PROJECT_ROOT, "requirements.txt")
 
 with open(REQUIREMENTS_FILE) as f:
-    REQUIREMENTS = f.read().splitlines()
+    lines = f.read().splitlines()
+    DEPENDENCY_LINKS = [l for l in lines if l.startswith('git+')]
+    REQUIREMENTS = [l for l in lines if not l.startswith('git+')]
 
 if __name__ == "__main__":
     setup(
@@ -26,6 +28,7 @@ if __name__ == "__main__":
         author_email=AUTHOR_EMAIL,
         packages=find_packages(),
         install_requires=REQUIREMENTS,
+        dependency_links=DEPENDENCY_LINKS,
         include_package_data=True,
         url=URL,
         license=LICENSE,
