@@ -1,4 +1,12 @@
-"""Groups the project overall info and requirements"""
+"""
+@file: setup.py
+Created on 01.02.19
+@project: LeelaStar
+@author: kiudee, islamelnabarawy, matuiss2
+
+Groups the project overall info and requirements
+"""
+
 from os.path import dirname, join, realpath
 from setuptools import find_packages, setup
 
