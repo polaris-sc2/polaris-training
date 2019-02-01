@@ -1,6 +1,6 @@
 """Groups the project overall info and requirements"""
-from os.path import realpath, dirname, join
-from setuptools import setup, find_packages
+from os.path import dirname, join, realpath
+from setuptools import find_packages, setup
 
 
 DISTNAME = "leelastar"
@@ -16,8 +16,8 @@ REQUIREMENTS_FILE = join(PROJECT_ROOT, "requirements.txt")
 
 with open(REQUIREMENTS_FILE) as f:
     lines = f.read().splitlines()
-    DEPENDENCY_LINKS = [l for l in lines if l.startswith('git+')]
-    REQUIREMENTS = [l for l in lines if not l.startswith('git+')]
+    DEPENDENCY_LINKS = [l for l in lines if l.startswith("git+")]
+    REQUIREMENTS = [l for l in lines if not l.startswith("git+")]
 
 if __name__ == "__main__":
     setup(
