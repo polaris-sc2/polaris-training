@@ -3,11 +3,11 @@ from os.path import dirname, join, realpath
 from setuptools import find_packages, setup
 
 
-DISTNAME = "leelastar"
-DESCRIPTION = "LeelaStar: Crowd-Sourced Deep Reinforcement Learning Agent for Starcraft 2"
-AUTHOR = "LeelaStar Developers"
-AUTHOR_EMAIL = "leelastar.devs@gmail.com"
-URL = "https://github.com/leelastar/leelastar-training"
+DISTNAME = "Polaris"
+DESCRIPTION = "Polaris: Crowd-Sourced Deep Reinforcement Learning Agent for Starcraft 2"
+AUTHOR = "Polaris Developers"
+AUTHOR_EMAIL = "polaris.devs@gmail.com"
+URL = "https://github.com/polaris-sc2/polaris-training"
 LICENSE = "Apache License, Version 2.0"
 VERSION = "0.0.1"
 
