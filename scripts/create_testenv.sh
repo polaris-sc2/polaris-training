@@ -22,7 +22,7 @@ then
 fi
 
 
-conda install --yes numpy
+conda install --yes numpy pytest
 pip install -r requirements.txt
 
 python setup.py build_ext --inplace

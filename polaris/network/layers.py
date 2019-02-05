@@ -1,11 +1,4 @@
-"""
-@file: layers.py
-Created on 02.02.19
-@project: LeelaStar
-@author: kiudee
-
-Groups the defined basic layer types used for the project
-"""
+"""Groups the defined basic layer types used for the project"""
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -23,7 +16,6 @@ class SqueezeExcitation(nn.Module):
     def __init__(self, channels, ratio):
         super().__init__()
         self.dense_linear_1 = nn.Linear(channels, channels // ratio)
-        self.relu = nn.ReLU(inplace=True)
         self.dense_linear_2 = nn.Linear(channels // ratio, 2 * channels)
 
     def forward(self, x):
@@ -32,7 +24,7 @@ class SqueezeExcitation(nn.Module):
 
         x = F.adaptive_avg_pool2d(x, 1).view(n, c)
         x = self.dense_linear_1(x)
-        x = self.relu(x)
+        x = F.relu(x, inplace=True)
         x = self.dense_linear_2(x)
 
         x = x.view(n, 2 * c, 1, 1)

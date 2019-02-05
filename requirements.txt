@@ -1,2 +1,3 @@
 numpy>=1.15
+torch>=1.0
 git+https://github.com/deepmind/pysc2.git#egg=PySC2
