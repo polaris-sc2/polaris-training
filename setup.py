@@ -1,4 +1,5 @@
 """Groups the project overall info and requirements"""
+
 from os.path import dirname, join, realpath
 from setuptools import find_packages, setup
 
