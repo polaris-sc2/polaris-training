@@ -2,6 +2,8 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
+from collections import OrderedDict
+
 
 class SqueezeExcitation(nn.Module):
     """Construct a squeeze excitation block for use in a residual block.
@@ -43,7 +45,7 @@ class ResidualBlock(nn.Sequential):
 
     def __init__(self, channels, kernel_size, se_ratio):
         super().__init__(
-            dict(
+            OrderedDict(
                 [
                     ("conv_layer_1", nn.Conv2d(channels, channels, kernel_size, padding=1, bias=False)),
                     ("batch_norm_1", nn.BatchNorm2d(channels)),
@@ -54,7 +56,6 @@ class ResidualBlock(nn.Sequential):
                 ]
             )
         )
-        self.relu2 = nn.ReLU(inplace=True)
 
     def forward(self, x):
         x_before = x
@@ -62,5 +63,5 @@ class ResidualBlock(nn.Sequential):
 
         # Add skip connection and apply second relu
         x = x + x_before
-        x = self.relu2(x)
+        x = F.relu(x, inplace=True)
         return x
