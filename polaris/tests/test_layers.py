@@ -1,3 +1,5 @@
+""" Group all tests cases for layers"""
+
 import pytest
 import torch
 
@@ -5,6 +7,7 @@ from polaris.network.layers import SqueezeExcitation, ResidualBlock2D
 
 
 def test_squeeze_excitation():
+    """ Test case for the squeeze excitation block layers"""
     X = torch.tensor([[[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]]])
     se = SqueezeExcitation(channels=1, ratio=1)
     se.dense_linear_1.weight.data = torch.tensor([[4.0]])
@@ -18,6 +21,7 @@ def test_squeeze_excitation():
 
 
 def test_residual_block():
+    """ Test case for the residual block layers"""
     X = torch.tensor([[[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]]])
     rb = ResidualBlock2D(channels=1, kernel_size=3, se_ratio=1)
     rb.conv_layer_1.weight.data = torch.tensor([[[[0.0, 1, 0.0], [1, 2, 1], [0.0, 1, 0.0]]]])
