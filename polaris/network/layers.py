@@ -1,8 +1,9 @@
 """Groups the defined basic layer types used for the project"""
-import torch.nn as nn
-import torch.nn.functional as F
 
 from collections import OrderedDict
+
+import torch.nn as nn
+import torch.nn.functional as F
 
 
 class SqueezeExcitation(nn.Module):
