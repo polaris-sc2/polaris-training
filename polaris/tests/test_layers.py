@@ -1,7 +1,7 @@
 import pytest
 import torch
 
-from polaris.network.layers import SqueezeExcitation, ResidualBlock
+from polaris.network.layers import SqueezeExcitation, ResidualBlock2D
 
 
 def test_squeeze_excitation():
@@ -19,7 +19,7 @@ def test_squeeze_excitation():
 
 def test_residual_block():
     X = torch.tensor([[[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]]])
-    rb = ResidualBlock(channels=1, kernel_size=3, se_ratio=1)
+    rb = ResidualBlock2D(channels=1, kernel_size=3, se_ratio=1)
     rb.conv_layer_1.weight.data = torch.tensor([[[[0.0, 1, 0.0], [1, 2, 1], [0.0, 1, 0.0]]]])
     rb.conv_layer_2.weight.data = torch.tensor([[[[0.0, 1, 0.0], [1, 1, 1], [0.0, 1, 0.0]]]])
     rb.batch_norm_1.weight.data = torch.tensor([0.1])

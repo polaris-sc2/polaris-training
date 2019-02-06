@@ -9,6 +9,16 @@ class SqueezeExcitation(nn.Module):
     """Construct a squeeze excitation block for use in a residual block.
 
     This uses the squeeze excitation block as proposed by `Hu et al. 2017`_.
+    A larger reduction ratio reduces computational cost, but may impact generalization performance.
+    The generalization performance does not change monotonically with increasing reduction ratio.
+    It is therefore recommended to treat it as a tunable hyperparameter.
+
+    Parameters
+    ----------
+    channels : int
+        Number of input channels
+    ratio : int
+        Reduction ratio of the bottleneck
 
     .. _Hu et al. 2017:
         https://arxiv.org/abs/1709.01507
@@ -36,11 +46,21 @@ class SqueezeExcitation(nn.Module):
         return x
 
 
-class ResidualBlock(nn.Sequential):
+class ResidualBlock2D(nn.Sequential):
     """Construct a residual block to be used in a convolutional architecture.
 
-    This class makes use of the squeeze excitation block to performs dynamic
+    This class makes use of the squeeze excitation block to perform dynamic
     channel-wise feature recalibration.
+
+    Parameters
+    ----------
+    channels : int
+        Number of input channels
+    kernel_size : int
+        Size of the convolving kernels
+    ratio : int
+        Reduction ratio of the bottleneck
+
     """
 
     def __init__(self, channels, kernel_size, se_ratio):
