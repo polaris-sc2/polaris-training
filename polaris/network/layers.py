@@ -59,7 +59,7 @@ class ResidualBlock2D(nn.Sequential):
         Number of input channels
     kernel_size : int
         Size of the convolving kernels
-    ratio : int
+    se_ratio : int
         Reduction ratio of the bottleneck
 
     """
