@@ -1,4 +1,5 @@
 """Groups the defined basic layer types used for the project"""
+import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -85,3 +86,37 @@ class ResidualBlock2D(nn.Sequential):
         x = x + x_before
         x = F.relu(x, inplace=True)
         return x
+
+
+class MultiHeadAttention(nn.Module):
+    def __init__(self, channels, heads, reduction_ratio=1):
+        super().__init__()
+        self.n_heads = heads
+        self.n_att_channels = heads * channels // reduction_ratio
+
+        self.conv_in = nn.Conv1d(in_channels=channels, out_channels=3 * self.n_att_channels, kernel_size=1)
+        self.conv_out = nn.Conv1d(in_channels=self.n_att_channels, out_channels=channels, kernel_size=1)
+
+        self.scale = 1.0 / np.sqrt(channels // reduction_ratio)
+        # Additionally account for Xavier/Glorot initialization:
+        self.scale /= np.sqrt(2 / (channels + 3 * self.n_att_channels))
+        self.scale *= np.sqrt(2 / (channels + self.n_att_channels))
+
+    def forward(self, x):
+        n, c, h, w = x.size()
+
+        # First stack the feature planes into vectors:
+        length = h * w
+        x = x.view(n, c, length)
+
+        # Apply 1d convolutions and scale to obtain Q, K and V:
+        scaled = self.conv_in(x) * self.scale
+        queries, keys, values = scaled.view(n, self.n_heads, -1, length).chunk(3, dim=2)
+
+        # Compute attention weights through dot product & softmax:
+        att_weights = queries.transpose(2, 3).matmul(keys).view(n, self.n_heads, -1)
+        att_weights = F.softmax(att_weights, dim=2).view(n, self.n_heads, length, length)
+
+        # Multiply attention weights with values and reshape to obtain original shape:
+        output = self.conv_out(values.matmul(att_weights).view(n, -1, length)).view(n, c, h, w)
+        return output
