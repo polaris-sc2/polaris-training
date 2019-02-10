@@ -1,9 +1,8 @@
 """Groups the defined basic layer types used for the project"""
+from collections import OrderedDict
 import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
-
-from collections import OrderedDict
 
 
 class SqueezeExcitation(nn.Module):
@@ -89,6 +88,22 @@ class ResidualBlock2D(nn.Sequential):
 
 
 class MultiHeadAttention(nn.Module):
+    """Construct a multi-head attention block to be used in a Transformer architecture.
+
+    Parameters
+    ----------
+    channels : int
+        Number of input channels
+    heads : int
+        Number of attention heads
+    reduction_ratio : int
+        Reduction ratio for the attention channels: att = heads * channels // reduction_ratio
+
+    .. _Battaglia et al. 2018:
+        https://arxiv.org/abs/1806.01261
+
+    """
+
     def __init__(self, channels, heads, reduction_ratio=1):
         super().__init__()
         self.n_heads = heads
