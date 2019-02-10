@@ -1,7 +1,7 @@
 import pytest
 import torch
 
-from polaris.network.layers import SqueezeExcitation, ResidualBlock2D
+from polaris.network.layers import SqueezeExcitation, ResidualBlock2D, MultiHeadAttention
 
 
 def test_squeeze_excitation():
@@ -31,4 +31,17 @@ def test_residual_block():
 
     output = rb(X)
     expected = torch.tensor([[[[0.000, 1.351, 2.282], [3.535, 5.685, 6.340], [7.018, 9.076, 9.823]]]])
+    assert pytest.approx(expected.detach().numpy(), abs=1e-3) == output.detach().numpy()
+
+
+def test_multi_head_attention():
+    X = torch.tensor([[[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]]])
+    mh = MultiHeadAttention(channels=1, heads=1, reduction_ratio=1)
+    mh.conv_in.weight.data = torch.tensor([[[0.1]], [[0.2]], [[0.3]]])
+    mh.conv_in.bias.data = torch.tensor([0.0, 0.0, 0.0])
+    mh.conv_out.weight.data = torch.tensor([[[0.5]]])
+    mh.conv_out.bias.data = torch.tensor([0.0])
+
+    output = mh(X)
+    expected = torch.tensor([[[[0.0390, 0.0508, 0.0666], [0.0879, 0.1168, 0.1561], [0.2097, 0.2829, 0.3835]]]])
     assert pytest.approx(expected.detach().numpy(), abs=1e-3) == output.detach().numpy()
